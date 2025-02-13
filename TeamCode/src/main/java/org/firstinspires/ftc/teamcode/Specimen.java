@@ -44,17 +44,17 @@ public class Specimen extends OpMode {
      * Lets assume our robot is 18 by 18 inches
      * Lets assume the Robot is facing the human player and we want to score in the bucket */
 
-    private final Pose firstPose = new Pose(38.90609555189455, 65.001647446458, Math.toRadians(0));
+    private final Pose firstPose = new Pose(40, 65, 0);
 
-    private final Pose secondPose = new Pose(19.927512355848435, 65.23887973640856, Math.toRadians(0));
+    private final Pose secondPose = new Pose(20, 65, 0);
 
-    private final Pose thirdPose = new Pose(64.28995057660626, 23.723228995057653, Math.toRadians(0));
+    private final Pose thirdPose = new Pose(65, 24, 0);
 
-    private final Pose fourthPose = new Pose(18.741350906095555, 14.471169686985165, Math.toRadians(0));
+    private final Pose fourthPose = new Pose(19, 15, 0);
 
-    private final Pose fifthPose = new Pose(64.05271828665569, 55.98682042833608, Math.toRadians(0));
+    private final Pose fifthPose = new Pose(65, 54, 0);
 
-    private final Pose parkControlPose = new Pose(18.741350906095555, 14.471169686985165, Math.toRadians(0));
+    private final Pose parkControlPose = new Pose(19, 15, 0);
 
 
 //    "controlPoints":[],"color":"#999579"},{"endPoint":{"x":64.28995057660626,"y":23.723228995057653,"heading":"constant","reverse":false,"degrees":0},"controlPoints":[{"x":18.741350906095555,"y":14.471169686985165},{"x":64.05271828665569,"y":55.98682042833608}],"color":"#587BC6"}]}
@@ -173,21 +173,6 @@ public class Specimen extends OpMode {
         buildPaths();
     }
 
-    /** This method is called continuously after Init while waiting for "play". **/
-    @Override
-    public void init_loop() {}
 
-    /** This method is called once at the start of the OpMode.
-     * It runs all the setup actions, including building paths and starting the path system **/
-    @Override
-    public void start() {
-        opmodeTimer.resetTimer();
-        setPathState(0);
-    }
-
-    /** We do not use this because everything should automatically disable **/
-    @Override
-    public void stop() {
-    }
 }
 
