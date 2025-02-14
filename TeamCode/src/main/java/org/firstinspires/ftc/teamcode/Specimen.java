@@ -166,7 +166,8 @@ public class Specimen extends OpMode {
         pathTimer = new Timer();
         opmodeTimer = new Timer();
         opmodeTimer.resetTimer();
-
+        FConstants fconstants = new FConstants();
+        LConstants lconstants = new LConstants();
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
         follower.setStartingPose(firstPose);

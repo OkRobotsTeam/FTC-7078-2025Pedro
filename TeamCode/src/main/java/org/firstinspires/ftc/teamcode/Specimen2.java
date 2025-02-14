@@ -17,7 +17,7 @@ import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
 
-@Autonomous(name = "Specimen2", group = "Examples")
+@Autonomous(name = "Specimen 2a", group = "Examples")
 public class Specimen2 extends LinearOpMode {
     IDRobot robot = new IDRobot();
     private Follower follower;
@@ -38,6 +38,8 @@ public class Specimen2 extends LinearOpMode {
         opmodeTimer = new Timer();
         opmodeTimer.resetTimer();
         robot.init(this);
+        FConstants fconstants = new FConstants();
+        LConstants lconstants = new LConstants();
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
         firstMove = new Path(new BezierLine(new Point(firstPose), new Point(secondPose)));
@@ -45,17 +47,17 @@ public class Specimen2 extends LinearOpMode {
         secondMove = new Path(new BezierCurve(new Point(secondPose), /* Control Point */ new Point(parkControlPose), new Point(thirdPose), new Point(fourthPose), new Point(fifthPose)));
         waitForStart();
 
-        robot.move(-20,1,false);
+//        robot.move(-20,1,false);
 
-//        follower.setStartingPose(firstPose);
-//        doPath(firstMove, "First Move", false,1000);
+        follower.setStartingPose(firstPose);
+        doPath(firstMove, "First Move", false,1000);
 //        doPath(secondMove, "Second Move", true,1000);
 
-        robot.setBraking();
-        sleep(5000);
-        robot.move(50,.5, true);
-        sleep(5000);
-        robot.turn(-45,1);
+//        robot.setBraking();
+//        sleep(5000);
+//        robot.move(50,.5, true);
+//        sleep(5000);
+//        robot.turn(-45,1);
 
 //        follower.setStartingPose(new Pose(0,0,0));
 //        while(opModeIsActive()) {
@@ -75,10 +77,14 @@ public class Specimen2 extends LinearOpMode {
 
     public void doPath(Path path, String pathName, boolean holdEnd, long timeout) {
         pathTimer = new Timer();
+        double maxPower = 0.2;
         System.out.println("Starting path "+ pathName);
         Debug.println("PathInfo:  0:  X: " ,path.getPoint(0).getX(), " Y: ", path.getPoint(0).getY(), " 1 X: " ,path.getPoint(1).getX(), " Y: ", path.getPoint(1).getY());
         follower.followPath(path, holdEnd);
+        follower.setMaxPower(0.3);
         while (follower.isBusy()  && opModeIsActive() ) {
+            maxPower = Math.min(maxPower+0.02, 1);
+            follower.setMaxPower(maxPower);
             follower.update();
             robot.tickSleep();
             if (pathTimer.getElapsedTime() > timeout) {
@@ -90,6 +96,7 @@ public class Specimen2 extends LinearOpMode {
             telemetry.addData("y", follower.getPose().getY());
             telemetry.addData("heading", follower.getPose().getHeading());
             telemetry.update();
+
         }
         System.out.println("Done with path "+ pathName);
     }
