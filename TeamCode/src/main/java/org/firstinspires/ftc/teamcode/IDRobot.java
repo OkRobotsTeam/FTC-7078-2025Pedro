@@ -1,11 +1,11 @@
 package org.firstinspires.ftc.teamcode;
-import android.view.MotionEvent;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -168,6 +168,7 @@ public class IDRobot {
     public DcMotor leftFront, rightFront, leftBack, rightBack;
     public CRServo leftIntake, rightIntake;
     public DcMotorEx armExtension, armRotation;
+    public DcMotor leftClimber, rightClimber;
     public Servo wristRotation;
     GoBildaPinpointDriver odo;
     //FakeOdo odo = new FakeOdo();
@@ -266,6 +267,12 @@ public class IDRobot {
         armExtension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armExtension.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        leftClimber = hardwareMap.get(DcMotor.class, "leftClimber");
+        rightClimber = hardwareMap.get(DcMotor.class, "rightClimber");
+        leftClimber.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightClimber.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftClimber.setDirection(DcMotorSimple.Direction.REVERSE);
+
         PIDFCoefficients coefficients = armRotation.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
 
         System.out.println("PID Coefficients: " + coefficients.toString());
@@ -355,6 +362,11 @@ public class IDRobot {
         //rightIntake.setPower(0);
         leftIntake.getController().pwmDisable();
         rightIntake.getController().pwmDisable();
+    }
+
+    public void rotateClimber(double power) {
+        leftClimber.setPower(power);
+        rightClimber.setPower(power);
     }
 
     public void extendArm(double power) {

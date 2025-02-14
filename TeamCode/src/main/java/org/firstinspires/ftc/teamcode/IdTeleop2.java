@@ -125,6 +125,14 @@ public class IdTeleop2 extends LinearOpMode {
                 rx = rx * 0.2;
             }
 
+            if (gamepad1.left_bumper) {
+                robot.rotateClimber(0.6);
+            } else if (gamepad1.left_trigger > 0.4) {
+                robot.rotateClimber(-0.6);
+            } else {
+                robot.rotateClimber(0);
+            }
+
             robot.leftFront.setPower(y_transformed + x_transformed * 1.1 + rx);
             robot.leftBack.setPower(y_transformed - x_transformed * 1.1 + rx);
             robot.rightFront.setPower(y_transformed - x_transformed * 1.1 - rx);
@@ -142,7 +150,7 @@ public class IdTeleop2 extends LinearOpMode {
             telemetry.addData("H", currentPosition.getHeading(AngleUnit.DEGREES));
             telemetry.addData("rx", rx);
             telemetry.update();
-            sleep(20);
+            robot.tickSleep();
             robot.odo.update();
         }
     }
