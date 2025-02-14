@@ -5,6 +5,7 @@ import com.pedropathing.localization.Pose;
 import com.pedropathing.pathgen.BezierCurve;
 import com.pedropathing.pathgen.BezierLine;
 import com.pedropathing.pathgen.Path;
+import com.pedropathing.pathgen.PathChain;
 import com.pedropathing.pathgen.Point;
 import com.pedropathing.util.Constants;
 import com.pedropathing.util.Timer;
@@ -45,16 +46,18 @@ public class Specimen2 extends LinearOpMode {
         waitForStart();
 
         robot.move(-20,1,false);
-        follower.setStartingPose(firstPose);
-        doPath(firstMove, "First Move", false,1000);
-        doPath(secondMove, "Second Move", true,1000);
+
+//        follower.setStartingPose(firstPose);
+//        doPath(firstMove, "First Move", false,1000);
+//        doPath(secondMove, "Second Move", true,1000);
+
         robot.setBraking();
         sleep(5000);
         robot.move(50,.5, true);
         sleep(5000);
         robot.turn(-45,1);
-//        follower.setStartingPose(new Pose(0,0,0));
 
+//        follower.setStartingPose(new Pose(0,0,0));
 //        while(opModeIsActive()) {
 //            follower.update();
 //            robot.tickSleep();
@@ -70,10 +73,10 @@ public class Specimen2 extends LinearOpMode {
 
 
 
-    public void doPath(Path path, String pathName, boolean holdEnd,  long timeout) {
+    public void doPath(Path path, String pathName, boolean holdEnd, long timeout) {
         pathTimer = new Timer();
-        currentPath = path;
         System.out.println("Starting path "+ pathName);
+        Debug.println("PathInfo:  0:  X: " ,path.getPoint(0).getX(), " Y: ", path.getPoint(0).getY(), " 1 X: " ,path.getPoint(1).getX(), " Y: ", path.getPoint(1).getY());
         follower.followPath(path, holdEnd);
         while (follower.isBusy()  && opModeIsActive() ) {
             follower.update();
