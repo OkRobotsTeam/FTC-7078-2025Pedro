@@ -61,16 +61,17 @@ public class IdNetBasket extends LinearOpMode {
         robot.setWristPosition(0.6);
         robot.extendArmToPosition(4900);
         robot.strafe(-20, 0.5, false);
-        robot.move(17,0.5,false);
+        robot.move(16,0.5,false);
         while (robot.armExtension.getCurrentPosition() < 4500) {
             sleep(20);
         }
         robot.runIntakeOut();
         sleep(1000);
         robot.stopIntake();
-        robot.extendArmToPosition(0);
         robot.move( -20, 0.5, false);
-        robot.turn(-138, 0.5);
+        robot.armExtension.setPower(0.6);
+        robot.extendArmToPosition(0);
+        robot.turn(-130, 0.5);
 //        robot.strafe(2.5, 0.6, false);
         robot.setWristPosition(0.9);
         robot.rotateArmToPosition(-100);

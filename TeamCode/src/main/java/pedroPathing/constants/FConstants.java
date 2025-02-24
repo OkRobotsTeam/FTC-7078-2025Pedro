@@ -28,7 +28,7 @@ public class FConstants {
         FollowerConstants.forwardZeroPowerAcceleration = -29;
         FollowerConstants.lateralZeroPowerAcceleration = -84;
 
-        FollowerConstants.translationalPIDFCoefficients.setCoefficients(0.01,0,0.01,0);
+        FollowerConstants.translationalPIDFCoefficients.setCoefficients(0.08,0,0.01,0);
         FollowerConstants.useSecondaryTranslationalPID = false;
         FollowerConstants.secondaryTranslationalPIDFCoefficients.setCoefficients(0.1,0,0.01,0); // Not being used, @see useSecondaryTranslationalPID
 

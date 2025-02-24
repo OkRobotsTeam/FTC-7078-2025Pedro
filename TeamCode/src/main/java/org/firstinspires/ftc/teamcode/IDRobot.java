@@ -369,6 +369,14 @@ public class IDRobot {
         rightClimber.setPower(power);
     }
 
+    public void rotateLeftClimber(double power) {
+        leftClimber.setPower(power);
+    }
+
+    public void rotateRightClimber(double power) {
+        rightClimber.setPower(power);
+    }
+
     public void extendArm(double power) {
         if (disableLimits == false) {
             if (armExtension.getCurrentPosition() < 10) {
@@ -382,16 +390,16 @@ public class IDRobot {
         armExtension.setPower(power);
     }
 
-    public void extendArmToPosition(int position) {
-        armExtension.setTargetPosition(position);
-        armExtension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        armExtension.setPower(0.7);
-    }
-
     public void rotateArmToPosition(int position) {
         armRotation.setTargetPosition(position);
         armRotation.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armRotation.setPower(1);
+    }
+
+    public void extendArmToPosition(int position) {
+        armExtension.setTargetPosition(position);
+        armExtension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        armExtension.setPower(0.7);
     }
     private void rotateArmCustom(int position) {
 //        armRotation.setTargetPosition(position);

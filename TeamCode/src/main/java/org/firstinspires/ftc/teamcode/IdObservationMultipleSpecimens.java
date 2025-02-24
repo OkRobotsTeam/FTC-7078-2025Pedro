@@ -152,6 +152,7 @@ public class IdObservationMultipleSpecimens extends LinearOpMode {
 //        waitForA();
         robot.strafe(110, 0.8, false);
         robot.extendArmToPosition(2400);
+        robot.setWristPosition(0.7);
         while (robot.armExtension.getCurrentPosition() < 1800) {
             sleep(20);
         }

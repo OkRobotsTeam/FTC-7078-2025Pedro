@@ -26,13 +26,14 @@ public class Specimen2 extends LinearOpMode {
     private int pathState;
 
 
-    private final Pose firstPose = new Pose(40, 65, 0);
-    private final Pose secondPose = new Pose(20, 65, 0);
-    private final Pose thirdPose = new Pose(65, 24, 0);
-    private final Pose fourthPose = new Pose(19, 15, 0);
-    private final Pose fifthPose = new Pose(65, 54, 0);
-    private final Pose parkControlPose = new Pose(19, 15, 0);
-    private Path firstMove, secondMove, currentPath;
+    private final Pose firstPose = new Pose(38, 66, 0);
+    private final Pose secondPose = new Pose(30, 58, 0);
+    private final Pose thirdPose = new Pose(30, 47, 0);
+    private final Pose fourthPose = new Pose(38, 38, 0);
+    private final Pose fifthPose = new Pose(53, 36, 0);
+    private final Pose sixthPose = new Pose(62, 30, 0);
+    private final Pose seventhPose = new Pose(62, 24, 0);
+    private final Pose eighthPose = new Pose(21, 24, 0);
 
     public void runOpMode() {
         opmodeTimer = new Timer();
@@ -42,15 +43,25 @@ public class Specimen2 extends LinearOpMode {
         LConstants lconstants = new LConstants();
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
-        firstMove = new Path(new BezierLine(new Point(firstPose), new Point(secondPose)));
-        firstMove.setLinearHeadingInterpolation(firstPose.getHeading(), secondPose.getHeading());
-        secondMove = new Path(new BezierCurve(new Point(secondPose), /* Control Point */ new Point(parkControlPose), new Point(thirdPose), new Point(fourthPose), new Point(fifthPose)));
+
+
         waitForStart();
 
 //        robot.move(-20,1,false);
 
         follower.setStartingPose(firstPose);
-        doPath(firstMove, "First Move", false,1000);
+        PathChain path = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(firstPose), new Point(secondPose))).setConstantHeadingInterpolation(0)
+                .addPath(new BezierLine(new Point(secondPose), new Point(thirdPose))).setConstantHeadingInterpolation(0)
+                .addPath(new BezierLine(new Point(thirdPose), new Point(fourthPose))).setConstantHeadingInterpolation(0)
+                .addPath(new BezierLine(new Point(fourthPose), new Point(fifthPose))).setConstantHeadingInterpolation(0)
+                .addPath(new BezierLine(new Point(fifthPose), new Point(sixthPose))).setConstantHeadingInterpolation(0)
+                .addPath(new BezierLine(new Point(sixthPose), new Point(seventhPose))).setConstantHeadingInterpolation(0)
+                .addPath(new BezierLine(new Point(seventhPose), new Point(eighthPose))).setConstantHeadingInterpolation(0)
+                .build();
+
+        doPath(path, "path", true, 100000);
+
 //        doPath(secondMove, "Second Move", true,1000);
 
 //        robot.setBraking();
@@ -75,17 +86,20 @@ public class Specimen2 extends LinearOpMode {
 
 
 
-    public void doPath(Path path, String pathName, boolean holdEnd, long timeout) {
+    public void doPath(PathChain path, String pathName, boolean holdEnd, long timeout) {
         pathTimer = new Timer();
-        double maxPower = 0.2;
+        double maxPower = 0.3;
         System.out.println("Starting path "+ pathName);
-        Debug.println("PathInfo:  0:  X: " ,path.getPoint(0).getX(), " Y: ", path.getPoint(0).getY(), " 1 X: " ,path.getPoint(1).getX(), " Y: ", path.getPoint(1).getY());
+//        Debug.println("PathInfo:  0:  X: " ,path.getPoint(0).getX(), " Y: ", path.getPoint(0).getY(), " 1 X: " ,path.getPoint(1).getX(), " Y: ", path.getPoint(1).getY());
         follower.followPath(path, holdEnd);
         follower.setMaxPower(0.3);
         while (follower.isBusy()  && opModeIsActive() ) {
-            maxPower = Math.min(maxPower+0.02, 1);
+            maxPower = Math.min(maxPower+0.05, 1);
             follower.setMaxPower(maxPower);
             follower.update();
+            Point currentPathPoint = follower.getCurrentPath().getPoint(follower.getCurrentTValue());
+
+            Debug.println("Path ", pathName, " T ", follower.getCurrentTValue(), " X (", follower.getPose().getX(), "|" , currentPathPoint.getX(), ") Y (",  follower.getPose().getY(),"|",currentPathPoint.getY(),")");
             robot.tickSleep();
             if (pathTimer.getElapsedTime() > timeout) {
                 System.out.println("ERROR: PATH TIMEOUT");
@@ -99,6 +113,10 @@ public class Specimen2 extends LinearOpMode {
 
         }
         System.out.println("Done with path "+ pathName);
+        robot.setPowers(0,0,0,0);
+        robot.setBraking();
+        Debug.println("Path ", pathName, " T ", follower.getCurrentTValue(), " X ", follower.getPose().getX(), " Y " , follower.getPose().getY());
+
     }
 
 }

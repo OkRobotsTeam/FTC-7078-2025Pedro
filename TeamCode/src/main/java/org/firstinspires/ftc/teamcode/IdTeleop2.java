@@ -120,17 +120,28 @@ public class IdTeleop2 extends LinearOpMode {
             }
 
             if (gamepad1.right_trigger > 0.3) {
-                x_transformed = x_transformed * 0.2;
-                y_transformed = y_transformed * 0.2;
-                rx = rx * 0.2;
+                x_transformed = x_transformed * 0.3;
+                y_transformed = y_transformed * 0.3;
+                rx = rx * 0.3;
             }
 
-            if (gamepad1.left_bumper) {
-                robot.rotateClimber(0.6);
-            } else if (gamepad1.left_trigger > 0.4) {
+            if (gamepad1.y) {
                 robot.rotateClimber(-0.6);
             } else {
-                robot.rotateClimber(0);
+                if (gamepad1.left_bumper) {
+                    robot.rotateLeftClimber(0.6);
+                } else if (gamepad1.left_trigger > 0.4) {
+                    robot.rotateLeftClimber(-0.6);
+                } else {
+                    robot.rotateLeftClimber(0);
+                }
+                if (gamepad1.x) {
+                    robot.rotateRightClimber(0.6);
+                } else if (gamepad1.b) {
+                    robot.rotateRightClimber(-0.6);
+                } else {
+                    robot.rotateRightClimber(0);
+                }
             }
 
             robot.leftFront.setPower(y_transformed + x_transformed * 1.1 + rx);
